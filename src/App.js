@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer } from 'react';
+import cartReducer from './reducers/cartReducer';
+// cartReducer = reducerFunction
+import Cart from './components/Cart';
 
 function App() {
+  const [state, dispatch] = useReducer(cartReducer, { cart: [] });
+
+  const addProduct = () => {
+    const newItem = {
+      id: Date.now(),
+      name: 'Produit ' + Math.floor(Math.random() * 100),
+      price: Math.floor(Math.random() * 100),
+    };
+    dispatch({ type: 'addItem', payload: newItem });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: '20px' }}>
+      <h1>🛍️ Gestion du Panier avec Immer</h1>
+      <button onClick={addProduct}>Ajouter un produit</button>
+      <Cart cart={state.cart} dispatch={dispatch} />
     </div>
   );
 }
